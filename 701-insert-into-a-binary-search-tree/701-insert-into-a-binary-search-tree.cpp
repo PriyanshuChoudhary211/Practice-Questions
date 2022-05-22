@@ -15,18 +15,7 @@ public:
     {
         if(root == NULL)
             return new TreeNode(val);
-        if(root->left == NULL && root->right == NULL)
-        {
-            if(root->val < val)
-            {
-                root->right = new TreeNode(val);
-                return root;
-            }
-            else 
-                root->left = new TreeNode(val);
-            return root;
-        }
-        
+     
             if(root->val>val)
             {
                 root->left = insert(root->left,val);
