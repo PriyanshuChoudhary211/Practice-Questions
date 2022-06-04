@@ -11,16 +11,31 @@ public:
     //     return dp[ind];        
     // }
     int rob(vector<int>& nums) {
-        vector<int>dp(nums.size());
-        dp[0] = nums[0];
+        //USING MEMORY
+        
+        // vector<int>dp(nums.size());
+        // dp[0] = nums[0];
+        // for(int i = 1; i<nums.size();i++)
+        // {
+        //     int take = nums[i];
+        //     if(i>1) take+=dp[i-2];
+        //     int nottake = 0 + dp[i-1];
+        //     dp[i] = max(take,nottake);
+        // }
+        // return dp[dp.size()-1];     
+        
+        //WITHOUT SPACE
+        
+        int prev=nums[0],prev2=0,curr=0;
         for(int i = 1; i<nums.size();i++)
         {
-            int take = nums[i];
-            if(i>1) take+=dp[i-2];
-            int nottake = 0 + dp[i-1];
-            dp[i] = max(take,nottake);
+            int take = nums[i]+prev2;
+            int nottake = prev;
+            curr = max(take,nottake);
+            prev2 =prev;
+            prev = curr;
         }
-        return dp[dp.size()-1];       
+        return prev;
         
     }
 };
