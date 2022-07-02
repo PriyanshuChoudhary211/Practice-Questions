@@ -1,50 +1,50 @@
 class Solution {
 public:
-     string longestPalindrome(string s) {
+    string longestPalindrome(string s) {
+        int n = s.length();
+        int dp[n][n];
+        memset(dp,0,sizeof(dp));
         
-        // edge cases
-        if(s.length() == 0 || s.length() == 1) return s;
-        
-        // to hold max len and its starting index
-        int maxLenBeginIndex = 0;
-        int maxLen = 1;
-        
-        int mid = 0;
-        while(mid < s.length()){
-            
-            // calculating middle window
-            
-            int midBegin = mid;
-            int midEnd = mid;
-            
-            // handling even length palindromes; the middlemost chars will trivially match in even length case
-            // so expand the middle window as long as possible
-            while( midEnd + 1 < s.length() && s[midEnd] == s[midEnd + 1]){ midEnd++ ; }
-            
-            // for next iteration
-            mid = midEnd + 1;
-            
-            // starting comparison in left and right windows
-            
-            // in case of odd len palindrome; both start from mid;
-            // in case of even; midBegin and midEnd handles it all
-            int leftWindow = midBegin;
-            int rightWindow = midEnd;
-            
-            // expand the windows left and right simultaneously
-            while(leftWindow - 1 >= 0 && rightWindow + 1 < s.length() && s[leftWindow - 1] == s[rightWindow + 1]){
-                    leftWindow--;
-                    rightWindow++;
-            }
-            
-            // update maxLen is currLen > maxLen
-            int currLen = rightWindow - leftWindow + 1;
-            if( currLen  > maxLen ){
-                maxLenBeginIndex = leftWindow;
-                maxLen = currLen;
+        for(int i = 0; i<n;i++)
+        {
+            for(int j = 0 ; j<n;j++)
+            {
+                if(i==j)
+                    dp[i][j]=1;
             }
         }
+        string ans="";
+        ans+=s[0];
+        int max = 1;
         
-        return s.substr(maxLenBeginIndex, maxLen);
+        for(int i = n-1; i>=0;i--)
+        {
+            for(int j = i+1 ; j<n;j++)
+            {
+                if(j-i==1)
+                {
+                    if(s[i]==s[j])
+                    {
+                        dp[i][j]=1;
+                        
+                    }     
+                }
+                else
+                {
+                    if(s[i]==s[j] && dp[i+1][j-1]==1)
+                    {
+                        dp[i][j]=1;
+                    }
+                    
+                }
+                if(dp[i][j]==1 && j-i+1>max)
+                {
+                  string x = s.substr(i,j-i+1);
+                  ans = x;
+                  max = j-i+1;
+                }
+            }
+        }
+        return ans;
     }
 };
