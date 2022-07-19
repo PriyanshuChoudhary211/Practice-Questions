@@ -1,15 +1,16 @@
 class Solution {
 public:
-    // int count=0;
+    int climb(int n,vector<int>&dp)
+    {
+        if(n==0) return 1;
+        else if(n<0) return 0;
+        if(dp[n]!=-1) return dp[n];
+        int x = climb(n-1,dp);
+        int y = climb(n-2,dp);
+        return dp[n]=x+y;
+    }
     int climbStairs(int n) {
-       if (n <= 2) return n;
-        int prev = 2, prev2 = 1, res;
-        for (int i = 3; i <= n; i++) {
-            res = prev + prev2;
-            prev2 = prev;
-            prev = res;
-        }
-        return res;
-           
+        vector<int>dp(n+1,-1);
+        return climb(n,dp);
     }
 };
