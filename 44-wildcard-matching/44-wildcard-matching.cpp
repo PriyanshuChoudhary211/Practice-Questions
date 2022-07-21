@@ -15,13 +15,12 @@ public:
         }
         if(dp[i][j]!=-1) return dp[i][j];
         int x=0,y=0;
-        if(s[i]==t[j]||t[j]=='?') return dp[i][j] = func(s,t,i-1,j-1,dp);
+        if(s[i]==t[j]||t[j]=='?') x=func(s,t,i-1,j-1,dp);
         else if(t[j]=='*')
         {
-            return dp[i][j]= func(s,t,i-1,j,dp)||func(s,t,i,j-1,dp);
+            y=func(s,t,i,j-1,dp)||func(s,t,i-1,j,dp);
         }
-        else
-       return dp[i][j]=0;
+       return dp[i][j]=x||y;
     }
     bool isMatch(string s, string t) {
         int n=s.length(),m=t.length();
