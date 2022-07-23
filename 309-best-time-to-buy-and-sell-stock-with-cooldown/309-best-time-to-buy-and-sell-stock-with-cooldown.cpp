@@ -16,7 +16,24 @@ public:
         return dp[ind][b]=prof;
     }
     int maxProfit(vector<int>& prices) {
-        vector<vector<int>>dp(prices.size(),vector<int>(2,-1));
-        return func(prices,0,1,dp);
+        vector<vector<int>>dp(prices.size()+2,vector<int>(2,0));
+         int prof=0;
+        for(int ind=prices.size()-1;ind>=0;ind--)
+        {
+            for(int b=1;b>=0;b--)
+            {
+                 if(b)
+                {
+                    prof=max(-prices[ind]+dp[ind+1][0],dp[ind+1][1]);
+                }
+                else
+                {
+                    prof=max(prices[ind]+dp[ind+2][1],dp[ind+1][0]);
+                }
+                dp[ind][b]=prof;
+                
+            }
+        }        
+        return dp[0][1];
     }
 };
