@@ -1,21 +1,40 @@
+// class Solution {
+// public:
+//     int func(vector<int>&nums,int ind,int last,vector<vector<int>>&dp)
+//     {
+//         if(ind==nums.size())return 0;
+//         if(dp[ind][last+10001]!=-1) return dp[ind][last+10001];
+        
+//         int np=func(nums,ind+1,last,dp);
+//         int p=0;
+//         if(nums[ind]>last)
+//         {
+//             p=1+func(nums,ind+1,nums[ind],dp);
+//         }
+//         return dp[ind][last+10001]=max(p,np);
+//     }
+//     int lengthOfLIS(vector<int>& nums) {
+        
+//     vector<vector<int>>dp(nums.size(),vector<int>(20002,-1));
+//      return func(nums,0,-10001,dp);   
+//     }
+// };
 class Solution {
 public:
-    int func(vector<int>&nums,int ind,int last,vector<vector<int>>&dp)
-    {
+    int find(vector<int>& nums,int ind,int last,vector<vector<int>> &dp){
         if(ind==nums.size())return 0;
-        if(dp[ind][last+10001]!=-1) return dp[ind][last+10001];
+        if(dp[ind][last+1]!=-1)return dp[ind][last+1];
+        int pick=INT_MIN,n_pick=INT_MIN;
         
-        int np=func(nums,ind+1,last,dp);
-        int p=0;
-        if(nums[ind]>last)
-        {
-            p=1+func(nums,ind+1,nums[ind],dp);
+        n_pick=find(nums,ind+1,last,dp);
+        if(last==-1 || nums[ind]>nums[last]){
+            pick=1+find(nums,ind+1,ind,dp);
         }
-        return dp[ind][last+10001]=max(p,np);
+        return dp[ind][last+1]=max(pick,n_pick);
     }
     int lengthOfLIS(vector<int>& nums) {
-        
-    vector<vector<int>>dp(nums.size(),vector<int>(20002,-1));
-     return func(nums,0,-10001,dp);   
+        int n=nums.size();
+        vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        return find(nums,0,-1,dp);
     }
 };
