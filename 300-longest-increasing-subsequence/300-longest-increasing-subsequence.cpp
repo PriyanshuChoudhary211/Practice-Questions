@@ -53,23 +53,46 @@
 //     }
 // };
 
-//USING BINARY SEARCH 
-
+//TABULATION
 class Solution {
 public:
      int lengthOfLIS(vector<int>& nums) {
-         vector<int>ans;
-         ans.push_back(nums[0]);
-         for(int i=0;i<nums.size();i++)
+         int n=nums.size();
+         vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+             int pick=INT_MIN,n_pick=INT_MIN;
+         for(int ind=n-1;ind>=0;ind--)
          {
-             if(nums[i]>ans.back())
-                 ans.push_back(nums[i]);
-             else
+             for(int last=ind-1;last>=-1;last--)
              {
-                 int x=lower_bound(ans.begin(),ans.end(),nums[i])-ans.begin();
-                 ans[x]=nums[i];
+                  int n_pick=dp[ind+1][last+1],pick=0;
+                   if(last==-1 || nums[ind]>nums[last])
+                        pick=1+dp[ind+1][ind+1];
+                      
+                  dp[ind][last+1]=max(pick,n_pick);    
              }
          }
-         return ans.size();
+       
+         return dp[0][0];
      }
 };
+
+//USING BINARY SEARCH 
+
+// class Solution {
+// public:
+//      int lengthOfLIS(vector<int>& nums) {
+//          vector<int>ans;
+//          ans.push_back(nums[0]);
+//          for(int i=0;i<nums.size();i++)
+//          {
+//              if(nums[i]>ans.back())
+//                  ans.push_back(nums[i]);
+//              else
+//              {
+//                  int x=lower_bound(ans.begin(),ans.end(),nums[i])-ans.begin();
+//                  ans[x]=nums[i];
+//              }
+//          }
+//          return ans.size();
+//      }
+// };
