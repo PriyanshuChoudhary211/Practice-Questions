@@ -1,17 +1,15 @@
 class Solution {
 public:
-    int robHouse(vector<int>&nums,vector<int>&dp,int n)
+    int func(vector<int>&nums,int ind,vector<int>&dp)
     {
-        if(n==nums.size()-1)
-            return nums[n];
-        else if(n>nums.size()-1) return 0;
-        if(dp[n]!=-1) return dp[n];
-        int np = robHouse(nums,dp,n+1);
-        int pick = nums[n] + robHouse(nums,dp,n+2);
-        return dp[n]=max(np,pick);        
+        if(ind>=nums.size())return 0; 
+        if(dp[ind]!=-1)return dp[ind];
+        int np=func(nums,ind+1,dp);
+        int p=nums[ind]+func(nums,ind+2,dp);
+        return dp[ind] = max(p,np);
     }
     int rob(vector<int>& nums) {
         vector<int>dp(nums.size()+1,-1);
-        return robHouse(nums,dp,0);
+        return func(nums,0,dp);
     }
 };
