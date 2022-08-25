@@ -1,8 +1,7 @@
 class Solution {
 public:
     bool canConstruct(string ransomNote, string magazine) {
-        map<char,int>m1;
-        map<char,int>m2;
+         map<char,int>m2;
         for(auto it:magazine)
         {
             m2[it]+=1;
