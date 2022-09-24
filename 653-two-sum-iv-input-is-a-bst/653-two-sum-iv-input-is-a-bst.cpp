@@ -11,30 +11,26 @@
  */
 class Solution {
 public:
-    bool search(TreeNode *root,int k,TreeNode*temp)
-    { 
-        if(root == NULL)
-            return false;
-        if(root->val == k && root!=temp)
-            return true;
-        if(root->val>k)
-        return search(root->left,k,temp);
-        else if(root->val<k)
-         return search(root->right,k,temp);     
-        
-       return false;
-    }
-    bool find(TreeNode* root, int k,TreeNode*temp){
-        if(root == NULL)
-            return false;
-       if(search(temp,k-(root->val),root)==true)
-           return true;
-        return find(root->left,k,temp) || find(root->right,k,temp);
+    vector<int>ans;
+    void inorder(TreeNode *root)
+    {
+        if(root)
+        {
+            inorder(root->left);
+            ans.push_back(root->val);
+            inorder(root->right);
+        }
     }
     bool findTarget(TreeNode* root, int k) {
-        if(root == NULL)
-            return false;
-        return find(root,k,root);
-        
+        inorder(root);
+        int i=0,j=ans.size()-1;
+
+        while(i<j)
+        {
+            if(ans[i]+ans[j]>k) j--;
+            else if(ans[i]+ans[j]<k) i++;
+            else return true;
+        }
+        return false;
     }
 };
