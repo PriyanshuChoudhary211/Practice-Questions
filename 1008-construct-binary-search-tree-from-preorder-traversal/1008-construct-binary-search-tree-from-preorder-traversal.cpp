@@ -11,43 +11,18 @@
  */
 class Solution {
 public:
-    TreeNode *bst(vector<int>&A , int &i, int bound)
+    TreeNode *check(vector<int>&preorder,int l,int r)
     {
-//         static int idx = 0;
-         
-//         if(idx == pre.size())
-//             return NULL;
-//         if(s>e)
-//             return NULL;
-//         int curr = pre[idx];
-//         TreeNode *root = new TreeNode(curr);
-//          idx++;
+        if(l>r) return NULL;
+        TreeNode *root=new TreeNode(preorder[l]); 
+        auto it=lower_bound(preorder.begin()+l+1,preorder.begin()+r+1,preorder[l])-preorder.begin();
+        int ind=it-1;
+            root->left=check(preorder,l+1,ind);
+            root->right=check(preorder,ind+1,r);
         
-//         if(s==e)
-//             return root;
-//          int pos = -1;
-//         for(int i = s; i<=e;i++)
-//         {
-//             if(curr == ino[i])
-//                 pos = i;
-//         }
-//         root->left = bst(pre,ino,s,pos-1);
-//         root->right = bst(pre,ino,pos+1,e);
-//         return root;
-
-        if(i == A.size()||A[i]>bound)return NULL;
-        TreeNode *root = new TreeNode(A[i++]);
-        root->left = bst(A,i,root->val);
-        root->right = bst(A,i,bound);
         return root;
     }
-    TreeNode* bstFromPreorder(vector<int>& a) {
-       // vector<int>ino = preorder;
-      //   sort(ino.begin(),ino.end());
-         int i = 0;
-      //   int idx = 0;
-      //   int e = ino.size()-1;
-      return bst(a,i,INT_MAX);
-        
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        return check(preorder,0,preorder.size()-1);
     }
 };
