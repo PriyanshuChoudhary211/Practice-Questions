@@ -51,7 +51,7 @@ public:
             for(int i=0;i<ans.size();i++)
             {
                 if(isSimilar(root,ans[i])==true)
-                    f=1;
+                {f=1;break;}
             }
             if(f==0)
                ans.push_back(root);
