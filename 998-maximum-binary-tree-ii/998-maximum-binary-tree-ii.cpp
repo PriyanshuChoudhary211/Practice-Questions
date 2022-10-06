@@ -15,7 +15,7 @@ public:
     TreeNode* insertIntoMaxTree(TreeNode* root, int val) {
         TreeNode *newNode= new TreeNode(val);
         TreeNode *parent=NULL,*curr=root;
-        while(curr!=NULL && curr->val>val)
+        while(curr && curr->val>val)
         {
             parent=curr;
             curr=curr->right;
