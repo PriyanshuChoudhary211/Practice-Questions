@@ -6,23 +6,9 @@ public:
     }
     
     bool book(int start, int end) {
-        mp[start]++;
-        mp[end]--;
-        int sum=0,f=0;
-        for(auto it:mp)
-        {
-            sum+=it.second;
-            if(sum>1)
-            {  f=1;
-             break;
-            }
-        }
-        if(f==1)
-        {
-            mp[start]--;
-            mp[end]++;
-            return false;
-        }
+        auto it=mp.upper_bound(start);
+        if(it!=mp.end() && it->second<end) return false;
+        mp[end]=start;
         return true;
     }
 };
