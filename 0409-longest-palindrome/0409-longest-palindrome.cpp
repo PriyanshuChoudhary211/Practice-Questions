@@ -8,28 +8,31 @@ public:
             mp[s[i]]++;
         }
         int res=0;
+         int one=0;
         for(auto it:mp)
         {
             if(it.second%2==0)
                 res+=it.second;
-            else if(it.second>1 && it.second%2!=0)
+            else
             {
                 int c=it.second-1;
-                mp[it.first]=1;
+                // mp[it.first]=1;
                 res+=c;
+                one = 1;
             }
         }
-        int one=0;
-        for(auto it:mp)
-        {
-            if(one==0 && it.second==1)
-            {
-                res+=1;
-                one =1;
-                break;
-            }
-        }
+       
+        // for(auto it:mp)
+        // {
+        //     if(one==0 && it.second==1)
+        //     {
+        //         res+=1;
+        //         one =1;
+        //         break;
+        //     }
+        // }
         
+        if(one==1) return res+1;
         return res;
     }
     
