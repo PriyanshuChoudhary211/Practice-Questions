@@ -1,24 +1,19 @@
 class Solution {
 public:
-    int fun(vector<int>&cost,int ind, vector<int>&dp)
+    int func(int i,vector<int>&cost,vector<int>&dp)
     {
-        if(ind==cost.size()-1)return cost[ind];
-        if(ind>cost.size()-1) return 0;
-        if(dp[ind]!=-1) return dp[ind];
-        //int second = INT_MAX;
-      
-        int first = cost[ind] + fun(cost,ind+1,dp);
-        // if(ind>1)
-        int second = cost[ind] + fun(cost,ind+2,dp);
-        return dp[ind] = min(first,second);
+        if(i>=cost.size()) return 0;
+        if(dp[i]!=-1) return dp[i];
+        int c1=0,c2=0;
+         c1=cost[i]+func(i+1,cost,dp);
+         c2=cost[i]+func(i+2,cost,dp);
+        
+        return dp[i]=min(c1,c2);
     }
     int minCostClimbingStairs(vector<int>& cost) {
-        vector<int>dp1(cost.size(),-1);
-        int ans1 = fun(cost,0,dp1);
-        auto it = cost.begin();
-        cost.erase(it);
-        vector<int>dp2(cost.size(),-1);
-        int ans2 = fun(cost,0,dp2);
-        return min(ans1, ans2);   
+        vector<int>dp(cost.size()+1,-1);
+        int a=func(0,cost,dp);
+        int b=func(1,cost,dp);
+        return min(a,b);
     }
 };
