@@ -6,13 +6,11 @@ public:
         {
             mp[tasks[i]]++;
         }
-        for(auto it:mp)
-        {
-            if(it.second==1) return -1;
-        }
         int ans=0;
         for(auto it:mp)
         {
+          if(it.second==1) return -1;
+
             int x=it.second;
             ans+=(x+2)/3;
         }
