@@ -5,25 +5,41 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    bool dfs(vector<int>&vis, vector<int>adj[],int n,int p)
+    bool detect(int vis[],int src,vector<int>adj[])
     {
-        vis[n]=1;
-        for(auto it: adj[n])
+        // int vis[V]={0};
+        queue<pair<int,int>>q;
+        q.push({src,-1});
+        vis[src]=1;
+        while(!q.empty())
         {
-            if(vis[it]==0)
+            auto node = q.front().first;
+            auto parent = q.front().second;
+            q.pop();
+            for(auto it: adj[node])
             {
-                if(dfs(vis,adj,it,n)) return true;
+                if(!vis[it])
+                {
+                    vis[it]=1;
+                    q.push({it,node});
+                }
+                else if(parent!=it)
+                    return true;
+                
             }
-            else if(it!=p) return true;
         }
         return false;
     }
     bool isCycle(int V, vector<int> adj[]) {
-        vector<int>vis(V);
+       
+       int vis[V]={0};
         for(int i=0;i<V;i++)
         {
-            if(vis[i]==0)
-                if(dfs(vis,adj,i,-1))return true;
+            if(!vis[i])
+            {
+                bool s=detect(vis,i,adj);
+                if(s==true) return true;
+            }
         }
         return false;
     }
