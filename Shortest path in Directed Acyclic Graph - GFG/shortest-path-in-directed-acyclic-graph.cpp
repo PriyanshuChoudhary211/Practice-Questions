@@ -8,43 +8,59 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
-     void dfs(int node,vector<pair<int,int>>adj[],stack<int>&st,vector<int>&vis){
-         vis[node]=1;
-         
-         for(auto it : adj[node]){
-             if(!vis[it.first])
-                dfs(it.first,adj,st,vis);
-         }
-         st.push(node);
-     }
-     vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
-        stack<int>st;
-        vector<pair<int,int>>adj[N];
-        vector<int>vis(N,0);
-        for(auto i : edges){
-            adj[i[0]].push_back({i[1],i[2]});
-        }
-        for(int i=0;i<N;i++){
-            if(!vis[i])
-                dfs(0,adj,st,vis);
-        }
-        
-        
-        vector<int>dist(N,INT_MAX);
-        dist[0]=0;
-        while(!st.empty()){
-            int top = st.top();
-            int dis = dist[top];
-            st.pop();
-            for(auto it:adj[top]){
-                dist[it.first] = min(it.second+dis,dist[it.first]);
+    void toposort(vector<pair<int,int>>adj[],stack<int>&st,int src,int vis[])
+    {
+        vis[src]=1;
+        for(auto it: adj[src])
+        {
+            if(!vis[it.first])
+            {
+                toposort(adj,st,it.first,vis);
             }
+            
         }
-        for(int i=0;i<N;i++){
-            if(dist[i]==INT_MAX)
-                dist[i]=-1;
-        }
-        return dist;
+        st.push(src);
+    }
+     vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
+      vector<pair<int,int>>adj[N];
+      vector<int>ans(N,1e9);
+      for(int i=0;i<M;i++)
+      {
+          adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+      }
+    //   for(int i=0;i<N;i++)
+    //   {
+    //       cout<<i<<" --> ";
+    //       for(auto it:adj[i])
+    //       {
+    //         cout<<"{"<<it.first<<" "<<it.second<<"} ";
+    //       }
+    //       cout<<endl;
+    //   }
+      stack<int>st;
+      int vis[N]={0};
+      for(int i=0;i<N;i++)
+      {
+          if(!vis[i])
+            toposort(adj,st,i,vis);
+      }
+      vector<int>topo;
+      while(!st.empty()){
+          topo.push_back(st.top());
+          st.pop();
+      }
+    //   for(auto it:topo) cout<<it<<" ";
+      ans[0]=0;
+      for(int i=0;i<topo.size();i++)
+      {
+          int f=topo[i];
+          for(auto it:adj[f])
+            ans[it.first]=min(ans[it.first],ans[f]+it.second);
+      }
+      for(int i=0;i<topo.size();i++){
+          if(ans[i]==1e9) ans[i]=-1;
+      }
+      return ans;
     }
 };
 
