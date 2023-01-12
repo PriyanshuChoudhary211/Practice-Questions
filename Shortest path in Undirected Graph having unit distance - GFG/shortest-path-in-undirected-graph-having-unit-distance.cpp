@@ -8,37 +8,32 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
-    vector<int> shortestPath(vector<vector<int>>& e, int N,int M, int src){
-        vector<int>adj[N];
-        for(int i=0;i<M;i++)
-        {
-            adj[e[i][0]].push_back(e[i][1]);
-            adj[e[i][1]].push_back(e[i][0]);
-        }
+    vector<int> shortestPath(vector<vector<int>>& edges, int N,int M, int src){
+       vector<int>adj[N];
+       for(int i=0;i<M;i++)
+       {
+           adj[edges[i][0]].push_back(edges[i][1]);
+           adj[edges[i][1]].push_back(edges[i][0]);
+       }
+        vector<int>ans(N,1e9);
         queue<int>q;
-        vector<int>dis(N,INT_MAX);
-        dis[src]=0;
         q.push(src);
+        ans[src]=0;
         while(!q.empty())
         {
-            int i=q.front();
-            int dist=dis[i];
+            int it=q.front();
             q.pop();
-            for(auto it:adj[i])
+            for(auto i:adj[it])
             {
-                if(dis[it]>dist+1)
+                if(ans[i]>ans[it]+1)
                 {
-                    dis[it]=dist+1;
-                    q.push(it);
+                    q.push(i);
+                    ans[i]=ans[it]+1;
                 }
             }
-            
         }
-        for(int i=0;i<N;i++)
-        {
-            if(dis[i]==INT_MAX) dis[i]=-1;
-        }
-        return dis;
+        for(int i=0;i<ans.size();i++) if(ans[i]==1e9) ans[i]=-1;
+        return ans;
         
     }
 };
