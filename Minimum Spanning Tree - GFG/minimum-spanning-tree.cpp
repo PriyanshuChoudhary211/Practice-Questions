@@ -4,42 +4,6 @@ using namespace std;
 
 // } Driver Code Ends
 
-class DisjointSet
-{
-    private:
-    vector<int>rank,parent;
-    public:
-    DisjointSet(int n)
-    {
-        rank.resize(n);
-        parent.resize(n);
-        for(int i=0;i<n;i++) parent[i]=i;
-    }
-    int findUParent(int node)
-    {
-        if(node==parent[node])return node;
-        return parent[node]=findUParent(parent[node]);
-    }
-    void unionByRank(int u,int v)
-    {
-        int ulp_u=findUParent(u);
-        int ulp_v=findUParent(v);
-        if(ulp_u==ulp_v) return;
-        else if(rank[ulp_u]<rank[ulp_v])
-        {
-            parent[ulp_u]=ulp_v;
-        }
-        else if(rank[ulp_u]>rank[ulp_v])
-        {
-            parent[ulp_v]=ulp_u;
-        }
-        else
-        {
-            parent[ulp_u]=ulp_v;
-            rank[ulp_v]++;
-        }
-    }
-};
 class Solution
 {
 	public:
@@ -52,27 +16,32 @@ class Solution
             for(auto it:adj[i])
                  arr.push_back({it[1],{i,it[0]}});
         }
-        sort(arr.begin(),arr.end());
-        DisjointSet obj(V);
-        int sum=0;
-        // for(int i=0;i<V;i++)
-        // {
-            for(auto it:arr)
-            {
-                int wt=it.first;
-                int u=it.second.first;
-                int v=it.second.second;
-                int ulp_u=obj.findUParent(u);
-                int ulp_v=obj.findUParent(v);
-                if(ulp_u==ulp_v) continue;
-                else
-                {
-                    obj.unionByRank(u,v);
-                    sum+=wt;
-                }
-            }
-        
-        return sum;
+       priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
+       int sum=0;
+       pq.push({0,{0,-1}});
+       vector<int>vis(V,0);
+    //   vis[0]=1;
+       while(!pq.empty())
+       {
+           auto it=pq.top();
+           pq.pop();
+           int wt=it.first;
+           int node=it.second.first;
+           int parent=it.second.second;
+           if(vis[node]) continue;
+           vis[node]=1;
+           sum+=wt;
+           for(auto it:adj[node])
+           {
+               if(!vis[it[0]])
+               {
+                  
+                   pq.push({it[1],{it[0],node}});
+               }
+           }
+       }
+       
+         return sum;
     }
 };
 
