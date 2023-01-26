@@ -10,51 +10,50 @@ using namespace std;
 class Solution{
     public:
     string findOrder(string dict[], int N, int K) {
-        vector<int>adj[K];
-        for(int k=1;k<N;k++)
+       vector<int>adj[K];
+       for(int k=1;k<N;k++)
+       {
+           string s1=dict[k-1];
+           string s2=dict[k];
+           int i=0,j=0;
+           while(i<s1.length() && j<s2.length())
+           {
+               if(s1[i]!=s2[j])
+               {
+                   adj[s1[i]-'a'].push_back(s2[j]-'a');
+                   break;
+               }
+               i++;
+               j++;
+           }
+       }
+       string ans="";
+       queue<char>q;
+       vector<int>indegree(K,0);
+       for(int i=0;i<K;i++)
+       {
+           for(auto it:adj[i])
+           {
+               indegree[it]++;
+           }
+       }
+       for(int i=0;i<K;i++)
         {
-            string s=dict[k-1];
-            string t=dict[k];
-            int i=0,j=0;
-            while(i<s.length() && j<t.length())
-            {
-                if(s[i]!=t[j])
-                {
-                    adj[s[i]-'a'].push_back(t[j]-'a');
-                    break;
-                }
-                else i++,j++;
-            }
+            if(indegree[i]==0) q.push(i);
         }
-        vector<int>indeg(K);
-        queue<int>q;
-        for(int i=0;i<K;i++)
-        {
-            for(auto it:adj[i])
-            {
-                indeg[it]++;
-            }
-        }
-        for(int i=0;i<K;i++)
-        {
-            if(indeg[i]==0)
-                q.push(i);
-        }
-        string s;
         while(!q.empty())
         {
-            int f=q.front(); q.pop();
-            s+=f+'a';
+            int f=q.front();
+            q.pop();
+            ans+=f+'a';
             for(auto it:adj[f])
             {
-                indeg[it]--;
-                if(indeg[it]==0)
-                {
+                indegree[it]--;
+                if(indegree[it]==0)
                     q.push(it);
-                }
             }
         }
-        return s;
+        return ans;
     }
 };
 
