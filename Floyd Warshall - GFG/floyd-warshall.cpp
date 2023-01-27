@@ -9,33 +9,32 @@ using namespace std;
 
 class Solution {
   public:
-	void shortest_distance(vector<vector<int>>&m){
-	    for(int i=0;i<m.size();i++)
-	    {
-	        for(int j=0;j<m[0].size();j++)
-	        {
-	            if(m[i][j]==-1)
-	                m[i][j]=1e9;
-	        }
-	    }
-	    for(int via=0;via<m.size();via++)
-	    {
-	        for(int i=0;i<m.size();i++)
-	        {
-	            for(int j=0;j<m[0].size();j++)
-	            {
-	                m[i][j]=min(m[i][j],m[i][via]+m[via][j]);
-	            }
-	        }
-	    }
-	     for(int i=0;i<m.size();i++)
-	    {
-	        for(int j=0;j<m[0].size();j++)
-	        {
-	            if(m[i][j]==1e9)
-	                m[i][j]=-1;
-	        }
-	    }
+	void shortest_distance(vector<vector<int>>&matrix){
+	   for(int i=0;i<matrix.size();i++)
+	   {
+	       for(int j=0;j<matrix[0].size();j++)
+	       {
+	           if(matrix[i][j]==-1)
+	           matrix[i][j]=1e9;
+	       }
+	   }
+	   for(int via=0;via<matrix.size();via++)
+	   {
+	       for(int i=0;i<matrix.size();i++)
+    	   {
+    	       for(int j=0;j<matrix[0].size();j++)
+    	       {
+    	           matrix[i][j]=min(matrix[i][j],matrix[i][via]+matrix[via][j]);
+    	       }
+    	   }
+	   }
+	   for(int i=0;i<matrix.size();i++)
+	   {
+	       for(int j=0;j<matrix[0].size();j++)
+	       {
+	            if(matrix[i][j]==1e9) matrix[i][j]=-1;
+	       }
+	   }
 	}
 };
 
