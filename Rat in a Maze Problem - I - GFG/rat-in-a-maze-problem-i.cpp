@@ -10,24 +10,36 @@ using namespace std;
 
 class Solution{
     public:
-    void helper(int i,int j,vector<vector<int>>&m,string ans, vector<string>&res)
+    bool isSafe(vector<vector<int>>&m,int i,int j)
     {
-        if(i<0 || i>=m.size() || j<0 || j>=m[0].size() || m[i][j]==0) return;
-        if(i==m.size()-1 && j==m[0].size()-1) res.push_back(ans);
-        if(m[i][j]==1){
-             m[i][j]=0;
-             helper(i+1,j,m,ans+'D',res);
-             helper(i,j+1,m,ans+'R',res);
-             helper(i-1,j,m,ans+'U',res);
-             helper(i,j-1,m,ans+'L',res);
-             m[i][j]=1;
+        if(i>=m.size() || j>=m[0].size() || i<0 || j<0 || m[i][j]==0) return false;
+        return true;
+    }
+    void find(vector<vector<int>>&m, int n, string ans,vector<string>&res,int i, int j)
+    {
+        if(i==n-1 && j==n-1 && m[i][j]==1)
+        {
+            res.push_back(ans);
+            return;
         }
+        if(isSafe(m,i,j))
+        {
+            m[i][j]=0;
+            find(m,n,ans+'D',res,i+1,j);
+            find(m,n,ans+'R',res,i,j+1);
+            find(m,n,ans+'U',res,i-1,j);
+            find(m,n,ans+'L',res,i,j-1);
+            m[i][j]=1;
+        }
+        
     }
     vector<string> findPath(vector<vector<int>> &m, int n) {
-        vector<string>res;
         string ans="";
-        helper(0,0,m,ans,res);
+        vector<string>res;
+        find(m,n,ans,res,0,0);
+        if(res.size()==0) return {"-1"};
         return res;
+        
     }
 };
 
